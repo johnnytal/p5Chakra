@@ -12,7 +12,7 @@ function setup() {
   	song.loop();
   	song.disconnect();
     
-    filter = new p5.BandPass();
+    filter = new p5.LowPass();
     song.connect(filter);
     
     initPlugs();
@@ -63,7 +63,7 @@ function initPlugs(){
 }
 
 function readMagnet(reading){
-	magnetism = constrain(Math.round(parseInt(reading.magnitude)), 15, 4000);
+	magnetism = constrain(Math.round(parseInt(reading.magnitude)), 75, 4000);
 }
 
 function readLight(reading){
@@ -94,6 +94,6 @@ function playSong(){
 	
   	song.disconnect();
     
-    filter = new p5.BandPass();
+    filter = new p5.LowPass();
     song.connect(filter);  
 }
