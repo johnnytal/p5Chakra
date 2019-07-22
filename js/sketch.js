@@ -12,7 +12,7 @@ function setup() {
   	song.loop();
   	song.disconnect();
     
-    filter = new p5.LowPass();
+    filter = new p5.BandPass();
     song.connect(filter);
     
     initPlugs();
@@ -26,8 +26,8 @@ function draw() {
   _freq = luminosity;
   _res = magnetism / 5;
   
-  text('Freq:' + _freq, 20, 400);
-  text('Res:' + _res, 20, 100);
+  text('Freq:' + _freq, 20, 100);
+  text('Res:' + _res, 20, 300);
 
   filter.freq(_freq);
   filter.res(_res);
@@ -63,9 +63,37 @@ function initPlugs(){
 }
 
 function readMagnet(reading){
-	magnetism = Math.round(parseInt(reading.magnitude));
+	magnetism = constrain(Math.round(parseInt(reading.magnitude)), 15, 4000);
 }
 
 function readLight(reading){
 	luminosity = constrain(Math.round(parseInt(reading.intensity)), 100, 4000);
+}
+
+function handleFile(_what, fileObj) {
+	song.stop();
+	
+	var fileReader  = new FileReader;
+	
+	fileReader.readAsArrayBuffer(fileObj[0]);
+	
+	url = URL.createObjectURL(fileObj[0]); 
+	
+	if (_what.id == 'audio_file_light'){
+		newSfx.src = url;
+	}
+	
+	fileReader.onload = function(){
+	    var arrayBuffer = this.result;
+		song = loadSound(url, playSong);
+	};
+}
+
+function playSong(){
+	song.loop();
+	
+  	song.disconnect();
+    
+    filter = new p5.BandPass();
+    song.connect(filter);  
 }
