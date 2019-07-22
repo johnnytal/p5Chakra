@@ -23,7 +23,7 @@ function draw() {
   textSize(48);
   text('Magnetism:\n' + magnetism, 20, 100);
   
-  //var freq = map(magnetism, 70, 3900, 80, 2200);
+  var freq = map(magnetism, 35, 300, 80, 2200);
   filter.freq(magnetism);
   
   filter.res(25);
@@ -50,5 +50,5 @@ function initPlugs(){
 }
 
 function readLight(reading){
-	magnetism = Math.round(parseInt(reading.magnitude));
+	magnetism = constrain(Math.round(parseInt(reading.magnitude)), 35, 300);
 }
