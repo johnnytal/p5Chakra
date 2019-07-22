@@ -1,6 +1,7 @@
 var song;
 
 magnetism = 0;
+luminosity = 0;
 
 function preload() {
 	song = loadSound('assets/ahhh.mp3');
@@ -21,12 +22,15 @@ function draw() {
   background(210);
   
   textSize(48);
-  text('Magnetism:\n' + magnetism, 20, 100);
   
-  var freq = map(magnetism, 35, 300, 80, 2200);
-  filter.freq(magnetism);
+  _freq = luminosity;
+  _res = magnetism / 5;
   
-  filter.res(25);
+  text('Freq:' + _freq, 20, 400);
+  text('Res:' + _res, 20, 100);
+
+  filter.freq(_freq);
+  filter.res(_res);
 }
 
 function initPlugs(){
@@ -41,6 +45,15 @@ function initPlugs(){
     
 	cordova.plugins.magnetometer.watchReadings(
 		function success(reading){
+	        readMagnet(reading);
+	    }, 
+	    function error(message){
+	    	alert('error ' + message);
+	    }
+    );
+    
+    window.plugin.lightsensor.watchReadings(
+		function success(reading){
 	        readLight(reading);
 	    }, 
 	    function error(message){
@@ -49,6 +62,10 @@ function initPlugs(){
     );
 }
 
+function readMagnet(reading){
+	magnetism = Math.round(parseInt(reading.magnitude));
+}
+
 function readLight(reading){
-	magnetism = constrain(Math.round(parseInt(reading.magnitude)), 35, 300);
+	luminosity = constrain(Math.round(parseInt(reading.intensity)), 100, 4000);
 }
