@@ -3,11 +3,11 @@ var song;
 magnetism = 0;
 
 function preload() {
-  song = loadSound('assets/ahhh.mp3');
+	song = loadSound('assets/ahhh.mp3');
 }
 
 function setup() {
-	createCanvas(1000, 560);
+	createCanvas(700, 400);
   	song.loop();
   	song.disconnect();
     
@@ -18,10 +18,13 @@ function setup() {
 }
 
 function draw() {
-  background(30);
-
-  var freq = map(magnetism, 70, 3900, 80, 2200);
-  filter.freq(freq);
+  background(210);
+  
+  textSize(48);
+  text('Magnetism:\n' + magnetism, 20, 100);
+  
+  //var freq = map(magnetism, 70, 3900, 80, 2200);
+  filter.freq(magnetism);
   
   filter.res(25);
 }
@@ -47,5 +50,5 @@ function initPlugs(){
 }
 
 function readLight(reading){
-	magnetism = parseInt(reading.magnitude);
+	magnetism = Math.round(parseInt(reading.magnitude));
 }
